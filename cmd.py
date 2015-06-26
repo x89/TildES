@@ -17,6 +17,7 @@ stress is always accented.
 import sys
 import re
 import random
+import itertools
 
 filename = "tilde_words"
 if len(sys.argv) > 1:
@@ -60,13 +61,27 @@ class Word:
         Good explanation: http://i1stspanish.com/syllabication-silabeo-lesson-two
         """
         word = self.word
+        # 1a. Dos vocales se separan si las dos son fuertes.
+        hard_vowels = [''.join(_) for _ in itertools.combinations('aaooee', 2)]
+        hard_vowels += ['aí', 'aú', 'oí', 'oú', 'eí', 'eú', 'ía', 'ío', \
+            'íe', 'úa', 'úo', 'úe']
+        for vowels in hard_vowels:
+            word = re.sub(vowels, '{0} {1}'.format(vowels[0], vowels[1]), word)
+        # 2. Consonants are *normally* split, exceptions added.
+        consonant_pairs = [''.join(_) for _ in \
+                itertools.permutations('bcdfghjklmnpqrstvwxyz'*2, 2)]
+        consonant_pairs.remove('ch')  # ch are always together
+        for pair in consonant_pairs:
+            if pair[1] in ['l', 'r']:  # If the pair ends in l or r don't split
+                consonant_pairs.remove(pair)
+        for pair in consonant_pairs:
+            word = re.sub(pair, '{0} {1}'.format(pair[0], pair[1]), word)
+        return word.split(' ')
 
-        return(['Th', 'is', 'Is', 'Not', 'Com', 'plete'])
+#rx_áéíóú = re.compile(r'(.*)([áéíóú])(.*)')
 
 words = random.sample(words, 20)
-rx_áéíóú = re.compile(r'(.*)([áéíóú])(.*)')
 for word in words:
-    aeiou = re.search(rx_áéíóú, word)
     word = Word(word)
-    print(aeiou.groups(), word.deaccent())
+    print(word.syllabicate(), word.deaccent())
 
