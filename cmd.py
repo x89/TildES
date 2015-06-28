@@ -70,12 +70,25 @@ class Word:
         # 2. Consonants are *normally* split, exceptions added.
         consonant_pairs = [''.join(_) for _ in \
                 itertools.permutations('bcdfghjklmnpqrstvwxyz'*2, 2)]
-        consonant_pairs.remove('ch')  # ch are always together
+        # The following are kept together
+        consonant_pairs.remove('ch')
+        consonant_pairs.remove('ll')
+        consonant_pairs.remove('rr')
+        consonant_pairs.remove('dr')
+        consonant_pairs.remove('tr')
+        consonant_pairs.remove('bl')
+        consonant_pairs.remove('cl')
+        consonant_pairs.remove('fl')
+        consonant_pairs.remove('gl')
+        consonant_pairs.remove('pl')
+        consonant_pairs.remove('br')
+        consonant_pairs.remove('cr')
+        consonant_pairs.remove('fr')
+        consonant_pairs.remove('gr')
+        consonant_pairs.remove('pr')
         for pair in consonant_pairs:
-            if pair[1] in ['l', 'r']:  # If the pair ends in l or r don't split
-                consonant_pairs.remove(pair)
-        for pair in consonant_pairs:
-            word = re.sub(pair, '{0} {1}'.format(pair[0], pair[1]), word)
+            m = re.search(pair, word)
+            print(m.start(), m.end(), word, pair)
         return word.split(' ')
 
 #rx_áéíóú = re.compile(r'(.*)([áéíóú])(.*)')
