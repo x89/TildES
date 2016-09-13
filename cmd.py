@@ -88,7 +88,7 @@ class Word:
         consonant_pairs.remove('pr')
         for pair in consonant_pairs:
             m = re.search(pair, word)
-            print(m.start(), m.end(), word, pair)
+            print(word, pair)
         return word.split(' ')
 
 #rx_áéíóú = re.compile(r'(.*)([áéíóú])(.*)')
