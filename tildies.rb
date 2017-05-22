@@ -17,8 +17,8 @@ words.shuffle!  # Randomise word order
 
 vowels = %w{a e i o u A E I O U}
 tilde_vowels = %w{á é í ó ú Á É Í Ó Ú}
-to_tilde = Hash[vowels.collect{ |v| [v, tilde_vowels[vowels.index(v)]] }]
-from_tilde = Hash[tilde_vowels.collect{ |v| [v, vowels[tilde_vowels.index(v)]] }]
+to_tilde = Hash[vowels.collect{|v| [v, tilde_vowels[vowels.index(v)]]}]
+from_tilde = Hash[tilde_vowels.collect{|v| [v, vowels[tilde_vowels.index(v)]]}]
 
 count = 5
 
@@ -37,7 +37,8 @@ count = 5
       index = idx
     end
   end
+  neutered_word = word.chars.map { |c| from_tilde[c] || c }.join
   puts
   puts helper_string
-  puts "#{word}"
+  puts "#{neutered_word} #{word}"
 end
