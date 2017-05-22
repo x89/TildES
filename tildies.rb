@@ -38,6 +38,7 @@ count = 5
     end
   end
   neutered_word = word.chars.map { |c| from_tilde[c] || c }.join
+  
   puts
   puts helper_string
   puts "#{neutered_word} #{word}"
